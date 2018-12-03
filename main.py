@@ -70,15 +70,27 @@ def BackupFiles():
 
 
 def DoBackup():
+	print("Starting Samba")
 	StartSamba()
+	print("Connecting SSH")
 	ConnectSSH()
+	print("Mapping drive")
 	MapNetworkDrive()
+	print("Backing up files")
 	BackupFiles()
+	print("Unmapping drive")
 	UnmapNetworkDrive()
+	print("Disconnecting SSH")
 	DisconnectSSH()
+	print("Stopping Samba")
+	StopSamba()
 
 
 def main():
 	while True:
 		DoBackup()
 		sleep(60)
+
+
+if __name__ == '__main__':
+	main()
