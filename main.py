@@ -65,7 +65,7 @@ def UnmapNetworkDrive():
 
 def BackupFiles():
 	folder_name = datetime.now().__str__()
-	folder_name = folder_name.sub(":", "-")
+	folder_name = folder_name.replace(":", "-")
 	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=drive+"\\"+folder_name))
 	ssh_session.prompt()
 	print("Backup file output:", ssh_session.before)
