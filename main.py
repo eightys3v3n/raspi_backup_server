@@ -1,5 +1,5 @@
 import subprocess
-import telnetlib
+from pexpect import pxssh
 import getpass
 from time import sleep
 
