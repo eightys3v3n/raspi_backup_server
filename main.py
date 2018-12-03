@@ -2,6 +2,7 @@ import subprocess
 from pexpect import pxssh
 import getpass
 from time import sleep
+from datetime import datetime
 
 
 """ Start and stop Samba server
