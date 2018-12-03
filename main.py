@@ -41,7 +41,7 @@ def ConnectSSH():
 
 
 def DisconnectSSH():
-	if s is not None:
+	if ssh_session is not None:
 		ssh_session.logout()
 
 
@@ -52,14 +52,14 @@ def TestSSH():
 
 
 def MapNetworkDrive():
-	ssh_session.sendline("net use {drive} \\\\{ip}{path} /USER:{user} {passw}".format(
+	ssh_session.sendline("net.exe use {drive} \\\\{ip}{path} /USER:{user} {passw}".format(
 		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_username, passw=linux_password))
 	ssh_session.prompt()
 	print("Map drive output:", ssh_session.before)
 
 
 def UnmapNetworkDrive():
-	ssh_session.sendline("net use \\\\{ip}{path} /delete".format(ip=linux_ip, path=linux_path))
+	ssh_session.sendline("net.exe use \\\\{ip}{path} /delete".format(ip=linux_ip, path=linux_path))
 	ssh_session.prompt()
 	print("Unmap drive output:", ssh_session.before)
 
