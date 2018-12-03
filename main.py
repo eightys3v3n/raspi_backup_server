@@ -17,7 +17,7 @@ from datetime import datetime
 linux_ip = "192.168.1.38"
 linux_username = "anonymous"
 linux_password = "Abc123"
-linux_path = "/mnt/shared"
+linux_path = "/mnt/{drive}/shared/{folder}"
 windows_ip = "192.168.1.200"
 windows_username = "eightys3v3n"
 windows_password = getpass.getpass("Windows SSH Password: ")
@@ -67,7 +67,8 @@ def UnmapNetworkDrive():
 def BackupFiles():
 	folder_name = datetime.now().__str__()
 	folder_name = folder_name.replace(":", "-")
-	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=drive+"\\"+folder_name))
+	drive = windows_drive.lower()[0]
+	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=linux_path.format(drive=drive, folder=folder_name)))
 	ssh_session.prompt()
 	print("Backup file output:", ssh_session.before)
 
