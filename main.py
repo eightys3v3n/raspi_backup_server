@@ -25,11 +25,11 @@ ssh_session = None
 
 
 def StartSamba():
-	subprocess.call("/usr/bin/systemctl start smb")
+	subprocess.call("/usr/bin/systemctl start smb", shell=True)
 
 
 def StopSamba():
-	subprocess.call("/usr/bin/systemctl stop smb")
+	subprocess.call("/usr/bin/systemctl stop smb", shell=True)
 
 
 def ConnectSSH():
