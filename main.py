@@ -22,6 +22,7 @@ windows_ip = "192.168.1.200"
 windows_username = "eightys3v3n"
 windows_password = getpass.getpass("Windows SSH Password: ")
 windows_drive = "K:"
+windows_folder = "/mnt/c/Users/Terrence/Desktop/test"
 ssh_session = None
 
 
