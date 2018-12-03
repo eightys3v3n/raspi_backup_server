@@ -51,7 +51,7 @@ def TestSSH():
 
 def MapNetworkDrive():
 	ssh_session.sendline("net use {drive} \\\\{ip}{path} /USER:{user} {passw}".format(
-		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_user, passw=linux_password))
+		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_username, passw=linux_password))
 	ssh_session.prompt()
 	print("Map drive output:", ssh_session.before)
 
