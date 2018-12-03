@@ -33,40 +33,41 @@ def StopSamba():
 
 
 def ConnectSSH():
-	s = pxssh.pxssh()
-	s.login(windows_ip, windows_username, windows_password, port="443", original_prompt="[|]")
+	global ssh_session
+	ssh_session = pxssh.pxssh()
+	ssh_session.login(windows_ip, windows_username, windows_password, port="443", original_prompt="[|]")
 
 
 def DisconnectSSH():
 	if s is not None:
-		s.logout()
+		ssh_session.logout()
 
 
 def TestSSH():
-	s.sendline("uptime")
-	s.prompt()
-	print("Tested command over SSH", s.before)
+	ssh_session.sendline("uptime")
+	ssh_session.prompt()
+	print("Tested command over SSH", ssh_session.before)
 
 
 def MapNetworkDrive():
-	s.sendline("net use {drive} \\\\{ip}{path} /USER:{user} {passw}".format(
+	ssh_session.sendline("net use {drive} \\\\{ip}{path} /USER:{user} {passw}".format(
 		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_user, passw=linux_password))
-	s.prompt()
-	print("Map drive output:", s.before)
+	ssh_session.prompt()
+	print("Map drive output:", ssh_session.before)
 
 
 def UnmapNetworkDrive():
-	s.sendline("net use \\\\{ip}{path} /delete".format(ip=linux_ip, path=linux_path))
-	s.prompt()
-	print("Unmap drive output:", s.before)
+	ssh_session.sendline("net use \\\\{ip}{path} /delete".format(ip=linux_ip, path=linux_path))
+	ssh_session.prompt()
+	print("Unmap drive output:", ssh_session.before)
 
 
 def BackupFiles():
 	folder_name = datetime.now().__str__()
 	folder_name = folder_name.sub(":", "-")
-	s.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=drive+"\\"+folder_name))
-	s.prompt()
-	print("Backup file output:", s.before)
+	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=drive+"\\"+folder_name))
+	ssh_session.prompt()
+	print("Backup file output:", ssh_session.before)
 
 
 def DoBackup():
