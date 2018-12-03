@@ -17,12 +17,14 @@ from datetime import datetime
 linux_ip = "192.168.1.38"
 linux_username = "anonymous"
 linux_password = "Abc123"
-linux_path = "/mnt/{drive}/shared/{folder}"
+# linux_path = "/mnt/{drive}/shared/{folder}"
+linux_path = "{drive}:\\{folder}"
 windows_ip = "192.168.1.200"
 windows_username = "eightys3v3n"
 windows_password = getpass.getpass("Windows SSH Password: ")
 windows_drive = "K:"
-windows_folder = "/mnt/c/Users/Terrence/Desktop/test"
+# windows_folder = "/mnt/c/Users/Terrence/Desktop/test"
+windows_folder = "C:\\Users\\Terrence\\Desktop\\test"
 ssh_session = None
 
 
@@ -69,8 +71,8 @@ def BackupFiles():
 	folder_name = folder_name.replace(":", "-")
 	drive = windows_drive.lower()[0]
 	path = linux_path.format(drive=drive, folder=folder_name)
-	ssh_session.sendline("rsync -raAX {fr} {to}".format(fr=windows_folder, to=path))
-	# ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=linux_path.format(drive=drive, folder=folder_name)))
+	# ssh_session.sendline("rsync -raAX {fr} {to}".format(fr=windows_folder, to=path))
+	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=path))
 	ssh_session.prompt()
 	print("Backup file output:", ssh_session.before)
 
@@ -82,6 +84,7 @@ def DoBackup():
 	ConnectSSH()
 	print("Mapping drive")
 	MapNetworkDrive()
+	sleep(1000)
 	print("Backing up files")
 	BackupFiles()
 	print("Unmapping drive")
