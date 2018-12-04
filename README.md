@@ -12,13 +12,13 @@ Will run automatic backups of a Windows server over LAN using a Linux server to 
 3. [Install Samba on the Linux server](https://wiki.archlinux.org/index.php/samba).
 4. Add ports 137-139 and 445 to your firewall rules so the Samba share can be accessed.
 4. Add a share on the Linux machine by putting the following in `/etc/samba/smb.conf`:
-`
+```
 [share_name]
 	comment = Some description
 	browseable = yes
 	writable = yes
 	guest ok = no
 	path = /the_path/to_your_backup/storing/folder
-`
+```
 4. Modify the Linux variables at the top of main.py accordingly.
 5. Put this script on the Linux machine and run it.
