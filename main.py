@@ -21,15 +21,20 @@ from datetime import datetime
 linux_ip = "192.168.1.38"
 linux_username = "anonymous"
 linux_password = "Abc123"
-# linux_path = "/mnt/{drive}/shared/{folder}"
 linux_path = "backups"
 windows_ip = "192.168.1.200"
-windows_username = "eightys3v3n"
+windows_username = "Terrence"
 windows_password = getpass.getpass("Windows SSH Password: ")
+# windows_password = "Abc123"
 windows_drive = "K:"
-# windows_folder = "/mnt/c/Users/Terrence/Desktop/test"
 windows_folder = "C:\\Users\\Terrence\\Desktop\\test"
 ssh_session = None
+
+
+share_path = "\"\\\\{}\\{}\"".format(linux_ip, linux_path)
+# folder_name = datetime.now().__str__().replace(':', '-').replace(' ', '_')
+folder_name = "test"
+backup_dst = "{drive}\\{folder_name}".format(drive=windows_drive, folder_name=folder_name)
 
 
 def StartSamba():
@@ -43,7 +48,9 @@ def StopSamba():
 def ConnectSSH():
 	global ssh_session
 	ssh_session = pxssh.pxssh()
-	ssh_session.login(windows_ip, windows_username, windows_password, port="443", original_prompt="[|]")
+	ssh_session.login(windows_ip, windows_username, windows_password, port="443", original_prompt="[>$]", auto_prompt_reset=False)
+	# ssh_session.sync_original_prompt(sync_multiplier=1)
+	ssh_session.setwinsize(20, 200)
 
 
 def DisconnectSSH():
@@ -51,41 +58,35 @@ def DisconnectSSH():
 		ssh_session.logout()
 
 
-def TestSSH():
-	ssh_session.sendline("uptime")
-	ssh_session.prompt()
-	print("Tested command over SSH", ssh_session.before)
-
-
 def MapNetworkDrive():
-	print("/mnt/c/Windows/System32/net.exe use {drive} \\\\{ip}\\{path} /USER:{user} {passw}".format(
-		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_username, passw=linux_password))
-	ssh_session.sendline("/mnt/c/Windows/System32/net.exe use {drive} \\\\{ip}\\{path} /USER:{user} {passw}".format(
-		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_username, passw=linux_password))
-	ssh_session.prompt()
-	print("Map drive output:", ssh_session.before)
+	cmd = "net use {drive} {share} /USER:{user} {passw}".format(
+		drive=windows_drive, share=share_path, user=linux_username, passw=linux_password)
 
+	ssh_session.sendline(cmd)
+	ssh_session.prompt()
+	if b"The command completed successfully" not in ssh_session.before:
+		print("Map drive output:", ssh_session.before.decode())
 
 def UnmapNetworkDrive():
-	ssh_session.sendline("/mnt/c/Windows/System32/net.exe use {drive} /delete".format(drive=windows_drive))
+	cmd = "net use {} /delete".format(share_path)
+
+	ssh_session.sendline(cmd)
 	ssh_session.prompt()
-	print("Unmap drive output:", ssh_session.before)
+	if b"The command completed successfully" not in ssh_session.before:
+		print("Unmap drive output failed:", ssh_session.before.decode())
 
 
 def BackupFiles():
-	folder_name = datetime.now().__str__()
-	folder_name = folder_name.replace(":", "-")
-	drive = windows_drive.lower()[0]
-	path = linux_path.format(drive=drive, folder="test")
-	# ssh_session.sendline("rsync -raAX {fr} {to}".format(fr=windows_folder, to=path))
-	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=path))
+	cmd = "robocopy \"{from_}\" \"{to}\" /ZB /MIR /COPY:DAT".format(from_=windows_folder, to=backup_dst)
+
+	ssh_session.sendline(cmd)
 	ssh_session.prompt()
-	print("Backup file output:", ssh_session.before)
+	print(ssh_session.before.decode())
 
 
 def DoBackup():
-	print("Starting Samba")
-	StartSamba()
+	# print("Starting Samba")
+	# StartSamba()
 	print("Connecting SSH")
 	ConnectSSH()
 	print("Mapping drive")
@@ -94,16 +95,14 @@ def DoBackup():
 	BackupFiles()
 	print("Unmapping drive")
 	UnmapNetworkDrive()
-	print("Disconnecting SSH")
-	DisconnectSSH()
-	print("Stopping Samba")
-	StopSamba()
+	# print("Disconnecting SSH")
+	# DisconnectSSH()
+	# print("Stopping Samba")
+	# StopSamba()
 
 
 def main():
-	while True:
-		DoBackup()
-		sleep(60)
+	DoBackup()
 
 
 if __name__ == '__main__':
