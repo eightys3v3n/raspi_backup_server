@@ -13,12 +13,16 @@ from datetime import datetime
 		Get error code
 """
 
+""" CURRENTLY
+	The drive will not map on the windows PC using MapNetworkDrive()
+"""
+
 
 linux_ip = "192.168.1.38"
 linux_username = "anonymous"
 linux_password = "Abc123"
 # linux_path = "/mnt/{drive}/shared/{folder}"
-linux_path = "{drive}:\\{folder}"
+linux_path = "backups"
 windows_ip = "192.168.1.200"
 windows_username = "eightys3v3n"
 windows_password = getpass.getpass("Windows SSH Password: ")
@@ -54,14 +58,16 @@ def TestSSH():
 
 
 def MapNetworkDrive():
-	ssh_session.sendline("/mnt/c/Windows/System32/net.exe use {drive} \\\\{ip}{path} /USER:{user} {passw}".format(
+	print("/mnt/c/Windows/System32/net.exe use {drive} \\\\{ip}\\{path} /USER:{user} {passw}".format(
+		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_username, passw=linux_password))
+	ssh_session.sendline("/mnt/c/Windows/System32/net.exe use {drive} \\\\{ip}\\{path} /USER:{user} {passw}".format(
 		drive=windows_drive, ip=linux_ip, path=linux_path, user=linux_username, passw=linux_password))
 	ssh_session.prompt()
 	print("Map drive output:", ssh_session.before)
 
 
 def UnmapNetworkDrive():
-	ssh_session.sendline("/mnt/c/Windows/System32/net.exe use \\\\{ip}{path} /delete".format(ip=linux_ip, path=linux_path))
+	ssh_session.sendline("/mnt/c/Windows/System32/net.exe use {drive} /delete".format(drive=windows_drive))
 	ssh_session.prompt()
 	print("Unmap drive output:", ssh_session.before)
 
@@ -70,7 +76,7 @@ def BackupFiles():
 	folder_name = datetime.now().__str__()
 	folder_name = folder_name.replace(":", "-")
 	drive = windows_drive.lower()[0]
-	path = linux_path.format(drive=drive, folder=folder_name)
+	path = linux_path.format(drive=drive, folder="test")
 	# ssh_session.sendline("rsync -raAX {fr} {to}".format(fr=windows_folder, to=path))
 	ssh_session.sendline("/mnt/c/Windows/System32/Robocopy.exe {fr} {to} /ZB /COPYALL /MIR".format(fr=windows_folder, to=path))
 	ssh_session.prompt()
@@ -84,7 +90,6 @@ def DoBackup():
 	ConnectSSH()
 	print("Mapping drive")
 	MapNetworkDrive()
-	sleep(1000)
 	print("Backing up files")
 	BackupFiles()
 	print("Unmapping drive")
