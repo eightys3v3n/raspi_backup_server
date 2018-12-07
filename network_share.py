@@ -67,7 +67,6 @@ class TestService(unittest.TestCase):
 	@classmethod
 	def tearDownClass(cls):
 		global logger
-		logger.flush()
 		logger.close()
 
 
