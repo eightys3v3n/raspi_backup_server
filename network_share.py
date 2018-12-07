@@ -32,7 +32,7 @@ class Service:
 
 		status = re.search(stdout, b"Active: ([\w]+)")
 		if status is None:
-			logger.warning("Couldn't find service status in systemctl status output")
+			logger.warning("Couldn't find service status in systemctl output")
 			logger.debug("Status command output:", stdout)
 			return ServiceStatus.Unknown
 
@@ -71,9 +71,9 @@ class TestService(unittest.TestCase):
 		fh.setLevel(logging.DEBUG)
 
 		ch = logging.StreamHandler()
-		ch.setLevel(logging.WARNING)
+		ch.setLevel(logging.INFO)
 
-		formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s")
+		formatter = logging.Formatter("%(asctime)s %(name)s (%(levelname)s): %(message)s")
 		fh.setFormatter(formatter)
 		ch.setFormatter(formatter)
 		logger.addHandler(fh)
