@@ -74,16 +74,16 @@ class TestService(unittest.TestCase):
 		logger = logging.getLogger("Network_Share_Test")
 		logger.setLevel(logging.DEBUG)
 
-		fh = logging.FileHandler("network_share_test.log")
-		fh.setLevel(logging.DEBUG)
+		# fh = logging.FileHandler("network_share_test.log")
+		# fh.setLevel(logging.DEBUG)
 
 		ch = logging.StreamHandler()
 		ch.setLevel(logging.INFO)
 
 		formatter = logging.Formatter("%(asctime)s %(name)s (%(levelname)s): %(message)s")
-		fh.setFormatter(formatter)
+		# fh.setFormatter(formatter)
 		ch.setFormatter(formatter)
-		logger.addHandler(fh)
+		# logger.addHandler(fh)
 		logger.addHandler(ch)
 
 
