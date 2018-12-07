@@ -31,18 +31,18 @@ class Service:
 		stdout, _ = p.communicate()
 
 		logger.info("Getting status of service '{}'".format(self.name))
-		status = re.search(stdout, b"Active: ([\w]+)")
+		status = re.search(stdout, b"Active: ([\w]+) ")
 
 		if status is None:
 			logger.warning("Couldn't find service status in systemctl output")
-			logger.debug("Status command output:", stdout)
+			logger.debug("Status command output: {}".format(stdout))
 			return ServiceStatus.Unknown
 
 		status = status.group(1)
 		try:
 			status = ServiceStatus(status)
 		except ValueError:
-			logger.warning("Unrecognized service status:", status)
+			logger.warning("Unrecognized service status: {}".format(status))
 			return ServiceStatus.Unknown
 
 		return status
