@@ -88,16 +88,10 @@ class TestService(unittest.TestCase):
 
 
 	def test_status(self):
-		self.service.Start()
-		sleep(1)
 		status = self.service.Status()
-		self.assertEqual(status, ServiceStatus.Active)
-
-		self.service.Stop()
-		sleep(1)
-		status = self.service.Status()
-		self.assertEqual(status, ServiceStatus.Inactive)
-
+		p = subprocess.run("systemctl status {} | sed -rn 's/  Active: ([a-z]+) .*/\1/p'", shell=True, capture_output=True)
+		parsed_status = p.output.decode()
+		self.assertEqual(parsed_status, status.value)
 
 
 if __name__ == '__main__':
