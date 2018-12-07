@@ -72,7 +72,7 @@ class TestService(unittest.TestCase):
 	def create_logger(self):
 		global logger
 		logger = logging.getLogger("Network_Share_Test")
-		logger.setLevel(logging.WARNING)
+		logger.setLevel(logging.DEBUG)
 
 		fh = logging.FileHandler("network_share_test.log")
 		fh.setLevel(logging.DEBUG)
