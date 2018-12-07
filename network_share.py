@@ -1,4 +1,4 @@
-import logger
+import logging
 import unittest
 import re
 from enum import Enum
