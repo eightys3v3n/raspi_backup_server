@@ -52,6 +52,7 @@ class Samba(Service):
 
 
 class TestService(unittest.TestCase):
+	@classmethod
 	def setUpClass(cls):
 		global logger
 		try:
