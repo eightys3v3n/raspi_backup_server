@@ -21,13 +21,13 @@ class Service:
 		self.name = name
 
 	def Start(self):
-		subprocess.call(["/usr/bin/systemctl", "start", self.SERVICE_NAME])
+		subprocess.call(["/usr/bin/systemctl", "start", self.name])
 
 	def Stop(self):
-		subprocess.call(["/usr/bin/systemctl", "stop", self.SERVICE_NAME])
+		subprocess.call(["/usr/bin/systemctl", "stop", self.name])
 
 	def Status(self):
-		p = subprocess.Popen(["/usr/bin/systemctl", "status", self.SERVICE_NAME], stdout=subprocess.PIPE)
+		p = subprocess.Popen(["/usr/bin/systemctl", "status", self.name], stdout=subprocess.PIPE)
 		stdout, _ = p.communicate()
 
 		status = re.search(stdout, b"Active: ([\w]+)")
