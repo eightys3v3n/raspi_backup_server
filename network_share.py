@@ -20,13 +20,13 @@ class Service:
 	def __init__(self, name):
 		self.name = name
 
-	def Start():
+	def Start(self):
 		subprocess.call(["/usr/bin/systemctl", "start", self.SERVICE_NAME])
 
-	def Stop():
+	def Stop(self):
 		subprocess.call(["/usr/bin/systemctl", "stop", self.SERVICE_NAME])
 
-	def Status():
+	def Status(self):
 		p = subprocess.Popen(["/usr/bin/systemctl", "status", self.SERVICE_NAME], stdout=subprocess.PIPE)
 		stdout, _ = p.communicate()
 
