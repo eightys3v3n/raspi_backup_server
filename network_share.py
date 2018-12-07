@@ -31,7 +31,7 @@ class Service:
 		stdout, _ = p.communicate()
 
 		logger.info("Getting status of service '{}'".format(self.name))
-		status = re.search(stdout, b"Active: ([\w]+) ")
+		status = re.search(b"Active: ([\w]+) ", stdout)
 
 		if status is None:
 			logger.warning("Couldn't find service status in systemctl output")
