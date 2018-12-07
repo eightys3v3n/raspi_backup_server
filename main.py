@@ -1,4 +1,5 @@
 import subprocess
+from network_share import Samba
 from pexpect import pxssh
 import getpass
 from time import sleep
@@ -38,14 +39,6 @@ folder_name = datetime.now().__str__().replace(':', '-').replace(' ', '_')
 backup_dst = "{drive}\\{folder_name}".format(drive=windows_drive, folder_name=folder_name)
 
 ssh_session = None
-
-
-def StartSamba():
-	subprocess.call("/usr/bin/systemctl start smb", shell=True)
-
-
-def StopSamba():
-	subprocess.call("/usr/bin/systemctl stop smb", shell=True)
 
 
 def ConnectSSH():
@@ -111,7 +104,7 @@ def DoBackup():
 			- Stop Samba
 	"""
 	print("Starting Samba")
-	StartSamba()
+	Samba.Start()
 	print("Connecting SSH")
 	ConnectSSH()
 	print("Mapping drive")
@@ -123,7 +116,7 @@ def DoBackup():
 	print("Disconnecting SSH")
 	DisconnectSSH()
 	print("Stopping Samba")
-	StopSamba()
+	Samba.Stop()
 
 
 def main():

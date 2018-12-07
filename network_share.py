@@ -21,10 +21,10 @@ class Service:
 		self.name = name
 
 	def Start(self):
-		subprocess.call(["/usr/bin/systemctl", "start", self.name])
+		p = subprocess.run(["/usr/bin/systemctl", "start", self.name])
 
 	def Stop(self):
-		subprocess.call(["/usr/bin/systemctl", "stop", self.name])
+		p = subprocess.run(["/usr/bin/systemctl", "stop", self.name])
 
 	def Status(self):
 		p = subprocess.Popen(["/usr/bin/systemctl", "status", self.name], stdout=subprocess.PIPE)
