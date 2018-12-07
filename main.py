@@ -1,5 +1,5 @@
 import subprocess
-from network_share import Samba
+import network_share as samba
 from pexpect import pxssh
 import getpass
 from time import sleep
@@ -104,7 +104,7 @@ def DoBackup():
 			- Stop Samba
 	"""
 	print("Starting Samba")
-	Samba.Start()
+	samba.Start()
 	print("Connecting SSH")
 	ConnectSSH()
 	print("Mapping drive")
@@ -116,7 +116,7 @@ def DoBackup():
 	print("Disconnecting SSH")
 	DisconnectSSH()
 	print("Stopping Samba")
-	Samba.Stop()
+	samba.Stop()
 
 
 def main():
