@@ -48,9 +48,20 @@ class Service:
 		return status
 
 
-class Samba(Service):
-	def __init__(self):
-		super(Samba, self).__init__(self, "smb")
+class Samba:
+	service = Service("smb")
+
+	@staticmethod
+	def Start():
+		return service.Start()
+
+	@staticmethod
+	def Stop():
+		return service.Stop()
+
+	@staticmethod
+	def Status():
+		return service.Status()
 
 
 class TestService(unittest.TestCase):
