@@ -38,7 +38,7 @@ class Service:
 			logger.debug("Status command output: {}".format(stdout))
 			return ServiceStatus.Unknown
 
-		status = status.group(1)
+		status = status.group(1).decode()
 		try:
 			status = ServiceStatus(status)
 		except ValueError:
