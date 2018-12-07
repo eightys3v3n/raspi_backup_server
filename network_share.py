@@ -30,7 +30,9 @@ class Service:
 		p = subprocess.Popen(["/usr/bin/systemctl", "status", self.name], stdout=subprocess.PIPE)
 		stdout, _ = p.communicate()
 
+		logger.info("Getting status of service '{}'".format(self.name))
 		status = re.search(stdout, b"Active: ([\w]+)")
+
 		if status is None:
 			logger.warning("Couldn't find service status in systemctl output")
 			logger.debug("Status command output:", stdout)
@@ -84,12 +86,12 @@ class TestService(unittest.TestCase):
 		self.service.Start()
 		sleep(1)
 		status = self.service.Status()
-		self.assertEquals(status, ServiceStatus.Active)
+		self.assertEqual(status, ServiceStatus.Active)
 
 		self.service.Stop()
 		sleep(1)
 		status = self.service.Status()
-		self.assertEquals(status, ServiceStatus.Inactive)
+		self.assertEqual(status, ServiceStatus.Inactive)
 
 
 
