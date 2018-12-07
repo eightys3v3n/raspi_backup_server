@@ -48,20 +48,17 @@ class Service:
 		return status
 
 
-class Samba:
-	service = Service("smb")
+smb_service = Service("smb")
 
-	@staticmethod
-	def Start():
-		return service.Start()
 
-	@staticmethod
-	def Stop():
-		return service.Stop()
+def Start():
+	return smb_service.Start()
 
-	@staticmethod
-	def Status():
-		return service.Status()
+def Stop():
+	return smb_service.Stop()
+
+def Status():
+	return smb_service.Status()
 
 
 class TestService(unittest.TestCase):
