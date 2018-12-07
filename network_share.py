@@ -58,7 +58,7 @@ class TestService(unittest.TestCase):
 		try:
 			logger
 		except NameError:
-			cls.create_logger()
+			cls.create_logger(cls)
 		cls.service = Service("smb")
 
 
