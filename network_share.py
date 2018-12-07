@@ -66,8 +66,7 @@ class TestService(unittest.TestCase):
 
 	@classmethod
 	def tearDownClass(cls):
-		global logger
-		logger.shutdown()
+		logging.shutdown()
 
 
 	def create_logger(self):
