@@ -89,7 +89,7 @@ class TestService(unittest.TestCase):
 
 	def test_status(self):
 		status = self.service.Status()
-		cmd = "systemctl status {} | sed -rn 's/  Active: ([a-z]+) .*/\1/p'".format(self.service.name)
+		cmd = "systemctl status {} | sed -rn 's/\s+Active:\s+([a-z]+)\s+.*/\1/p'".format(self.service.name)
 		p = subprocess.run(cmd, shell=True, capture_output=True)
 		parsed_status = p.stdout.decode()
 		self.assertNotEqual(parsed_status, "")
