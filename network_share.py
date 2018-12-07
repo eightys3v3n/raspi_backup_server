@@ -34,7 +34,7 @@ class Service:
 		if status is None:
 			logger.warning("Couldn't find service status in systemctl status output")
 			logger.debug("Status command output:", stdout)
-			return ServiceStatus.unknown
+			return ServiceStatus.Unknown
 
 		status = status.group(1)
 		try:
