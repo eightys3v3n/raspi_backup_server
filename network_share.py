@@ -97,5 +97,17 @@ class TestService(unittest.TestCase):
 		self.assertEqual(parsed_status, status.value)
 
 
+	def test_start(self):
+		self.service.Start()
+		status = self.service.Status()
+		self.assertEqual(status, ServiceStatus.Active)
+
+
+	def test_stop(self):
+		self.service.Stop()
+		status = self.service.Status()
+		self.assertEqual(status, ServiceStatus.Inactive)
+
+
 if __name__ == '__main__':
 	unittest.main()
