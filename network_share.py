@@ -64,6 +64,13 @@ class TestService(unittest.TestCase):
 		cls.service = Service("smb")
 
 
+	@classmethod
+	def tearDownClass(cls):
+		global logger
+		logger.flush()
+		logger.close()
+
+
 	def create_logger(self):
 		global logger
 		logger = logging.getLogger("Network_Share_Test")
