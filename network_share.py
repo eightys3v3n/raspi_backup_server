@@ -21,7 +21,7 @@ class Service:
 		self.name = name
 
 	def Start(self):
-		p = subprocess.run(["/usr/bin/systemctl", "start", self.name])
+		p = subprocess.run([syste"/usr/bin/systemctl", "start", self.name])
 
 	def Stop(self):
 		p = subprocess.run(["/usr/bin/systemctl", "stop", self.name])
@@ -72,7 +72,7 @@ class TestService(unittest.TestCase):
 	def create_logger(self):
 		global logger
 		logger = logging.getLogger("Network_Share_Test")
-		logger.setLevel(logging.DEBUG)
+		logger.setLevel(logging.WARNING)
 
 		# fh = logging.FileHandler("network_share_test.log")
 		# fh.setLevel(logging.DEBUG)
