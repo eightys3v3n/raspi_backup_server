@@ -115,21 +115,21 @@ def DoBackup():
 	samba.Stop()
 
 
-def CreateLogger():
-	logger = logging.getLogger("Network_Share_Test")
-	logger.setLevel(logging.WARNING)
+# def CreateLogger():
+# 	logger = logging.getLogger(__name__)
+# 	logger.setLevel(logging.WARNING)
 
-	# fh = logging.FileHandler("network_share_test.log")
-	# fh.setLevel(logging.DEBUG)
+# 	# fh = logging.FileHandler("network_share_test.log")
+# 	# fh.setLevel(logging.DEBUG)
 
-	ch = logging.StreamHandler()
-	ch.setLevel(logging.INFO)
+# 	ch = logging.StreamHandler()
+# 	ch.setLevel(logging.INFO)
 
-	formatter = logging.Formatter("%(asctime)s %(name)s (%(levelname)s): %(message)s")
-	# fh.setFormatter(formatter)
-	ch.setFormatter(formatter)
-	# logger.addHandler(fh)
-	logger.addHandler(ch)
+# 	formatter = logging.Formatter("%(asctime)s %(name)s (%(levelname)s): %(message)s")
+# 	# fh.setFormatter(formatter)
+# 	ch.setFormatter(formatter)
+# 	# logger.addHandler(fh)
+# 	logger.addHandler(ch)
 
 
 def main():
