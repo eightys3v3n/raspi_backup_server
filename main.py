@@ -78,14 +78,15 @@ def UnmapNetworkDrive(ssh_sess):
 		print("Unmap drive output failed:", ssh_sess.before.decode())
 
 
-def BackupFiles():
+def BackupFiles(ssh_sess):
 	""" Use robocopy to mirror the win_path to the share under the folder_name derived at the top.
 	"""
+	# Mirror the directory structure in src to the network share preserving ONLY attributes and timestamps.
 	cmd = "robocopy \"{from_}\" \"{to}\" /ZB /MIR /COPY:DAT".format(from_=win_folder, to=backup_dst)
 
-	ssh_session.sendline(cmd)
-	ssh_session.prompt()
-	print(ssh_session.before.decode())
+	ssh_sess.sendline(cmd)
+	ssh_sess.prompt()
+	print(ssh_sess.before.decode())
 
 
 def DoBackup():
@@ -103,15 +104,32 @@ def DoBackup():
 	print("Connecting SSH")
 	ssh_sess = ConnectSSH()
 	print("Mapping drive")
-	MapNetworkDrive()
+	MapNetworkDrive(ssh_sess)
 	print("Backing up files")
-	BackupFiles()
+	BackupFiles(ssh_sess)
 	print("Unmapping drive")
-	UnmapNetworkDrive()
+	UnmapNetworkDrive(ssh_sess)
 	print("Disconnecting SSH")
 	DisconnectSSH(ssh_sess)
 	print("Stopping Samba")
 	samba.Stop()
+
+
+def CreateLogger():
+	logger = logging.getLogger("Network_Share_Test")
+	logger.setLevel(logging.WARNING)
+
+	# fh = logging.FileHandler("network_share_test.log")
+	# fh.setLevel(logging.DEBUG)
+
+	ch = logging.StreamHandler()
+	ch.setLevel(logging.INFO)
+
+	formatter = logging.Formatter("%(asctime)s %(name)s (%(levelname)s): %(message)s")
+	# fh.setFormatter(formatter)
+	ch.setFormatter(formatter)
+	# logger.addHandler(fh)
+	logger.addHandler(ch)
 
 
 def main():
